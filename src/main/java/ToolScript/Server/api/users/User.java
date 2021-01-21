@@ -1,39 +1,35 @@
 package ToolScript.Server.api.users;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
-@EntityScan
-@Table(value = "Users")
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+@Entity
 public class User {
-    
-    public User() {
-    }
-    
-    public User(String username, String password, String mail, String permission) {
-        super();
-        this.username = username;
-        this.password = password;
-        this.mail = mail;
-        this.permission = permission;
-    }
-    
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id_user;
+
     private String username;
+
     private String password;
+
     private String mail;
+
     private String permission;
 
-    
-    @Column(value = "id_user")
-    public Integer getIdUser() {
+    public Integer getId_user() {
         return id_user;
     }
-    
-    @Column(value = "username")
+
+    public void setId_user(Integer id_user) {
+        this.id_user = id_user;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -42,16 +38,15 @@ public class User {
         this.username = username;
     }
 
-    @Column(value = "password")
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+    	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    	this.password = bCryptPasswordEncoder.encode(password);
     }
-    
-    @Column(value = "mail")
+
     public String getMail() {
         return mail;
     }
@@ -59,13 +54,12 @@ public class User {
     public void setMail(String mail) {
         this.mail = mail;
     }
-    @Column(value = "permission")
+
     public String getPermission() {
         return permission;
     }
 
-    public void setPermission(String permission) {
+    public void setPermission(String permission ) {
         this.permission = permission;
     }
-
 }
