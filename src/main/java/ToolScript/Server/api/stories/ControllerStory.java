@@ -19,8 +19,8 @@ public class ControllerStory {
 	    return storyRepository.findById(id_story);
 	  }
 	  
-	  @GetMapping(path="stories")
-	  public @ResponseBody Iterable<Story> getAllStories() {
-	    return storyRepository.findAllForUser(idUser);
+	  @GetMapping(path="{id_user}/stories")
+	  public @ResponseBody Iterable<Story> getAllStories(@PathVariable Integer id_user) {
+	    return storyRepository.findAllForUser(id_user);
 	  }
 }

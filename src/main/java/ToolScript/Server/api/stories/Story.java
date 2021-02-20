@@ -5,7 +5,10 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import ToolScript.Server.api.users.User;
 
-@Entity
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Table(value = "Story")
 public class Story {
     //Attributes
@@ -16,7 +19,7 @@ public class Story {
 	
     private String story_story;
 
-    private Map<UserId, String> usersPerm = new Map<UserId, String>();
+    private Set<UserId> users = new HashSet<>();
     
 	
 	//Constructor
@@ -25,17 +28,9 @@ public class Story {
         this.id_story = id;
         this.title_story = title;
         this.story_story = story;
-		this.usersPerm.put(author, 'W');
+		this.users.add(new UserId(author.getIdUser(), "W"));
     }
 
-    Story create(String title, User author) {
-        return new Story(null, title, "", author);
-    }
-
-    void addUserPerm(User user, String perm) {
-        this.usersPerm.put(new UserId(user.getId()), perm)
-    }
-    
 	//Getters
     @Column(value = "id_story")
     public Integer getId() {
@@ -52,10 +47,10 @@ public class Story {
         return story_story;
     }
 	
-	Map<UserId, String> getUsersPermMap() {
-        return this.usersPerm.stream()
+	Set<Integer> getUserIds() {
+        return this.users.stream()
                 .map(UserId::getUser)
-                .collect(Collectors.toMap());
+                .collect(Collectors.toSet());
     }
 
 
@@ -68,13 +63,17 @@ public class Story {
         this.story_story = newStory;
     }
 	
-	public void setUsersPermMap(Map<User, String> usersPerm) {
-        this.usersPerm = usersPerm;
+	public void setUsersIds(Set<UserId> users) {
+        this.users = users;
     }
 	
 	
 	//Methods
-	public void addPermission(User user, String perm) {
-		this.usersPerm.put(user, perm);
-	}
+    public static Story create(String title, User author) {
+        return new Story(null, title, "", author);
+    }
+
+    public void addUserPerm(User user, String perm) {
+        this.users.add(new UserId(user.getIdUser(), perm));
+    }
 }
