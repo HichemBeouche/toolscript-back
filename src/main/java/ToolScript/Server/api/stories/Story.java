@@ -3,7 +3,6 @@ package ToolScript.Server.api.stories;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
 import ToolScript.Server.api.users.User;
 
 @Entity
@@ -17,25 +16,24 @@ public class Story {
 	
     private String story_story;
 
-    /*@ManyToMany
-	@JoinTable(name="Stoy_User",
-				joinColumns = { @JoinColum(name="id_story") },
-				inverseJoinColumns = { @JoinColum(name="id_user") })
-	@MapKeyColumn(name = "permission")
-	private Map<User, String> users;*/
-	@ElementCollection
-	@CollectionTable(name = "Stoy_User", joinColumns = @JoinColumn(name = "id_story"))
-	@MapKeyJoinColumn(name = "id_user")
-	@Column(name = "permission")
-	private Map<User, String> usersPerm;
+    private Map<UserId, String> usersPerm = new Map<UserId, String>();
     
 	
 	//Constructor
-    public Story(String title, String story, User author) {
+    public Story(Integer id, String title, String story, User author) {
         super();
+        this.id_story = id;
         this.title_story = title;
         this.story_story = story;
 		this.usersPerm.put(author, 'W');
+    }
+
+    Story create(String title, User author) {
+        return new Story(null, title, "", author);
+    }
+
+    void addUserPerm(User user, String perm) {
+        this.usersPerm.put(new UserId(user.getId()), perm)
     }
     
 	//Getters
@@ -54,8 +52,10 @@ public class Story {
         return story_story;
     }
 	
-	public Map<User, String> getUsersPermMap() {
-        return usersPerm;
+	Map<UserId, String> getUsersPermMap() {
+        return this.usersPerm.stream()
+                .map(UserId::getUser)
+                .collect(Collectors.toMap());
     }
 
 
