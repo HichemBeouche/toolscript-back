@@ -10,6 +10,8 @@ import com.api.toolscript.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUsername(String username);
+	Optional<User> findById(Integer id_user);
+	Optional<User> findByMail(String mail);
 
 	Boolean existsByUsername(String username);
 
