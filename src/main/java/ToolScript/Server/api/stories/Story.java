@@ -20,6 +20,9 @@ public class Story {
     @Column(value = "title_story")
     private String title;
 
+    @Column(value = "desc_story")
+    private String desc;
+
     @Column(value = "story_story")
     private String story;
 
@@ -34,6 +37,10 @@ public class Story {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 
     public String getStory() {
@@ -51,6 +58,10 @@ public class Story {
     public void setTitle(String newTitle) {
         this.title = newTitle;
     }
+
+    public void setDesc(String newDesc) {
+        this.desc = newDesc;
+    }
 	
 	public void setStory(String newStory) {
         this.story = newStory;
@@ -62,9 +73,10 @@ public class Story {
 	
 	
 	//Methods
-    public static Story create(String title, User author) {
+    public static Story create(String title, String desc, User author) {
         Story s = new Story();
         s.setTitle(title);
+        s.setDesc(desc);
         s.addUserPerm(author, "W");
         return s;
     }

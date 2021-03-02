@@ -29,7 +29,7 @@ public class storiesCRUDTests {
         userRepository.save(user);
         Assert.assertNotNull(user.getIdUser());
 
-        Story story = Story.create("aTitle", user);
+        Story story = Story.create("aTitle", null, user);
         storyRepository.save(story);
 
         Assert.assertNotNull(story.getId());
