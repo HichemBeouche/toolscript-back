@@ -1,7 +1,9 @@
 package ToolScript.Server.api.stories;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 import ToolScript.Server.api.users.User;
 
@@ -13,54 +15,45 @@ import java.util.stream.Collectors;
 public class Story {
     //Attributes
     @Id
-    private Integer id_story;
-	
-    private String title_story;
-	
-    private String story_story;
+    private Integer idStory;
 
+    @Column(value = "title_story")
+    private String title;
+
+    @Column(value = "story_story")
+    private String story;
+
+    @MappedCollection(idColumn = "id_story")
     private Set<UserId> users = new HashSet<>();
-    
-	
-	//Constructor
-    public Story(Integer id, String title, String story, User author) {
-        super();
-        this.id_story = id;
-        this.title_story = title;
-        this.story_story = story;
-		this.users.add(new UserId(author.getIdUser(), "W"));
-    }
+
 
 	//Getters
-    @Column(value = "id_story")
     public Integer getId() {
-        return id_story;
-    }
-    
-    @Column(value = "title_story")
-    public String getTitle() {
-        return title_story;
+        return idStory;
     }
 
-	@Column(value = "story_story")
+    public String getTitle() {
+        return title;
+    }
+
     public String getStory() {
-        return story_story;
+        return story;
     }
 	
 	Set<Integer> getUserIds() {
         return this.users.stream()
-                .map(UserId::getUser)
+                .map(UserId::getIdUser)
                 .collect(Collectors.toSet());
     }
 
 
 	//Setters
     public void setTitle(String newTitle) {
-        this.title_story = newTitle;
+        this.title = newTitle;
     }
 	
 	public void setStory(String newStory) {
-        this.story_story = newStory;
+        this.story = newStory;
     }
 	
 	public void setUsersIds(Set<UserId> users) {
@@ -70,7 +63,10 @@ public class Story {
 	
 	//Methods
     public static Story create(String title, User author) {
-        return new Story(null, title, "", author);
+        Story s = new Story();
+        s.setTitle(title);
+        s.addUserPerm(author, "W");
+        return s;
     }
 
     public void addUserPerm(User user, String perm) {

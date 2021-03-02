@@ -12,11 +12,11 @@ public class User {
     public User() {
     }
     
-    public User(String username, String password, String mail, String permission) {
+    public User(String username, String password, String email, String permission) {
         super();
         this.username = username;
         this.password = password;
-        this.mail = mail;
+        this.email = email;
         this.permission = permission;
     }
     
@@ -24,7 +24,7 @@ public class User {
     private Integer id_user;
     private String username;
     private String password;
-    private String mail;
+    private String email;
     private String permission;
 
     
@@ -51,13 +51,13 @@ public class User {
         this.password = password;
     }
     
-    @Column(value = "mail")
-    public String getMail() {
-        return mail;
+    @Column(value = "email")
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
     @Column(value = "permission")
     public String getPermission() {

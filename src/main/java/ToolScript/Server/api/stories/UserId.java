@@ -1,23 +1,35 @@
 package ToolScript.Server.api.stories;
 
+import lombok.AllArgsConstructor;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("story_user")
+@Table("Story_User")
 public class UserId {
-    private Integer user;
-    private String perm;
+    @Column(value = "id_user")
+    private Integer idUser;
 
-    public UserId(Integer user, String perm) {
-        this.user = user;
-        this.perm = perm;
+    @Column(value = "permission")
+    private String permission;
+
+    //Constructor
+    public UserId(Integer idUser, String permission) {
+        this.idUser = idUser;
+        this.permission = permission;
     }
 
     //Getters
-    public Integer getUser() {
-        return user;
+    public Integer getIdUser() {
+        return idUser;
     }
 
-    public String getPerm() {
-        return perm;
+    public String getPermission() {
+        return permission;
     }
+
+
+    //Setters
+    public void setIdUser(Integer idUser) { this.idUser = idUser; }
+
+    public void setPermission(String permission) { this.permission = permission; }
 }
