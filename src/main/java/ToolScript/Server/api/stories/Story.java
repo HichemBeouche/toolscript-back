@@ -30,6 +30,10 @@ public class Story {
     private Set<UserId> users = new HashSet<>();
 
 
+    //Constructor
+    private Story() {}
+
+
 	//Getters
     public Integer getId() {
         return idStory;
