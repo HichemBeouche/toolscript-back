@@ -26,7 +26,7 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@GetMapping(path="/user/{id_user}")
-	public @ResponseBody Optional<User> getUserById(@PathVariable Integer id_user){
+	public @ResponseBody Optional<User> getUserById(@PathVariable Long id_user){
 		return userRepository.findById(id_user);
 	}
 	
@@ -36,10 +36,11 @@ public class UserController {
 	}
 	
 	@PutMapping(path="/user/changePassword")
-	public void changePassword (@RequestBody User user) {
+	public ResponseEntity<?> changePassword (@RequestBody User user) {
 		User res = userRepository.findById(user.getId_user()).get();
 		res.setPassword(encoder.encode(user.getPassword()));
 		userRepository.save(res);
+		return ResponseEntity.ok(new MessageResponse("Password successfully changed !"));
 		
 	}
 	
@@ -65,7 +66,7 @@ public class UserController {
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
 		
-		User res = userRepository.findByMail(user.getEmail()).get();
+		User res = userRepository.findByEmail(user.getEmail()).get();
 		res.setEmail(user.getEmail());
 		userRepository.save(res);
 		return ResponseEntity.ok(new MessageResponse("Email successfully changed !"));
