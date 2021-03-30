@@ -18,7 +18,7 @@ import com.api.toolscript.models.User;
 import com.api.toolscript.payload.response.MessageResponse;
 import com.api.toolscript.repository.UserRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UserController {
 
