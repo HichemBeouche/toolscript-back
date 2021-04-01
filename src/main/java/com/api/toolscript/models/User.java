@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(	name = "Users",
@@ -26,7 +25,6 @@ public class User {
 	@Email
 	private String email;
 
-	@NotBlank
 	private String password;
 
 	private String permission;
@@ -40,7 +38,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String email, String password) {
+	public User(@NotBlank String username, @NotBlank String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;

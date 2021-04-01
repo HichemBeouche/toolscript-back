@@ -5,14 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.toolscript.models.User;
 import com.api.toolscript.payload.response.MessageResponse;
@@ -20,6 +13,7 @@ import com.api.toolscript.repository.UserRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
 	
@@ -29,7 +23,7 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping(path="/user/{id_user}")
+	@GetMapping(path="/{id_user}")
 	public @ResponseBody Optional<User> getUserById(@PathVariable Long id_user){
 		return userRepository.findById(id_user);
 	}
@@ -39,7 +33,7 @@ public class UserController {
 		return userRepository.findAll();
 	}
 	
-	@PutMapping(path="/user/changePassword")
+	@PutMapping(path="/changePassword")
 	public ResponseEntity<?> changePassword (@RequestBody User user) {
 		User res = userRepository.findById(user.getId_user()).get();
 		res.setPassword(encoder.encode(user.getPassword()));
@@ -48,7 +42,7 @@ public class UserController {
 		
 	}
 	
-	@PutMapping(path="/user/changeUsername")
+	@PutMapping(path="/changeUsername")
 	public ResponseEntity<?> changeUsername (@RequestBody User user) {
 		if (userRepository.existsByUsername(user.getUsername())) {
 			return ResponseEntity
@@ -62,7 +56,7 @@ public class UserController {
 		return ResponseEntity.ok(new MessageResponse("Username successfully changed !"));
 	}
 	
-	@PutMapping(path="/user/changeMail")
+	@PutMapping(path="/changeMail")
 	public ResponseEntity<?> changeMail (@RequestBody User user){
 		if (userRepository.existsByEmail(user.getEmail())) {
 			return ResponseEntity
