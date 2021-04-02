@@ -63,8 +63,8 @@ public class UserController {
 					.badRequest()
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
-		
-		User res = userRepository.findByEmail(user.getEmail()).get();
+
+		User res = userRepository.findById(user.getId_user()).get();
 		res.setEmail(user.getEmail());
 		userRepository.save(res);
 		return ResponseEntity.ok(new MessageResponse("Email successfully changed !"));
