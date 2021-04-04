@@ -1,7 +1,9 @@
 package ToolScript.Server.api.stories;
 
-import ToolScript.Server.api.users.User;
-import ToolScript.Server.api.users.UserRepository;
+import com.api.toolscript.models.Story;
+import com.api.toolscript.models.User;
+import com.api.toolscript.repository.StoryRepository;
+import com.api.toolscript.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
@@ -32,7 +34,7 @@ public class storiesCRUDTests {
         user = new User();
         user.setUsername("testUser"+new Random().nextInt());
         userRepository.save(user);
-        Assert.assertNotNull(user.getIdUser());
+        Assert.assertNotNull(user.getId_user());
         story = Story.create("Un titre", null, user);
         storyRepository.save(story);
         Assert.assertNotNull(story.getId());
@@ -56,16 +58,16 @@ public class storiesCRUDTests {
         user = new User();
         user.setUsername("testUser"+new Random().nextInt());
         userRepository.save(user);
-        Assert.assertNotNull(user.getIdUser());
-        Assert.assertEquals(0, storyRepository.findAllForUser(user.getIdUser()).size());
+        Assert.assertNotNull(user.getId_user());
+        Assert.assertEquals(0, storyRepository.findAllForUser(user.getId_user()).size());
         story = Story.create("aTitle", null, user);
         storyRepository.save(story);
         Assert.assertNotNull(story.getId());
         Assert.assertEquals("aTitle", story.getTitle());
         Assert.assertNull(story.getDesc());
         Assert.assertNull(story.getStory());
-        Assert.assertEquals(1, storyRepository.findAllForUser(user.getIdUser()).size());
-        Assert.assertEquals(user.getIdUser(), userRepository.findAllById(story.getUserIds()).iterator().next().getIdUser());
+        Assert.assertEquals(1, storyRepository.findAllForUser(user.getId_user()).size());
+        Assert.assertEquals(user.getId_user(), userRepository.findAllById(story.getUserIds()).iterator().next().getId_user());
 
         //Longueur de champs non valide pour la BDD
         //Le titre est trop long
@@ -87,14 +89,14 @@ public class storiesCRUDTests {
         //Pour chaque histoire, retourner les utilisateurs y ayant accès
         for (Story s : storyRepository.findAll()) {
             Assert.assertNotNull(s);
-            Assert.assertEquals(user.getIdUser(), userRepository.findAllById(s.getUserIds()).iterator().next().getIdUser());
+            Assert.assertEquals(user.getId_user(), userRepository.findAllById(s.getUserIds()).iterator().next().getId_user());
         }
 
         //Pour chaque utilisateur, retourner les histoires auxquelles il a accès
         for (User u : userRepository.findAll()) {
             Assert.assertNotNull(u);
-            Assert.assertNotNull(storyRepository.findAllForUser(user.getIdUser()));
-            Assert.assertEquals(story.getId(), storyRepository.findAllForUser(user.getIdUser()).get(0).getId());
+            Assert.assertNotNull(storyRepository.findAllForUser(user.getId_user()));
+            Assert.assertEquals(story.getId(), storyRepository.findAllForUser(user.getId_user()).get(0).getId());
         }
     }
 
@@ -156,9 +158,9 @@ public class storiesCRUDTests {
 
     @Test
     public void testDelete() {
-        Assert.assertEquals(1, storyRepository.findAllForUser(user.getIdUser()).size());
+        Assert.assertEquals(1, storyRepository.findAllForUser(user.getId_user()).size());
         storyRepository.delete(story);
-        Assert.assertEquals(0, storyRepository.findAllForUser(user.getIdUser()).size());
+        Assert.assertEquals(0, storyRepository.findAllForUser(user.getId_user()).size());
     }
 
     @Test
@@ -174,7 +176,7 @@ public class storiesCRUDTests {
         User user2 = new User();
         user2.setUsername("testUser2");
         userRepository.save(user2);
-        Assert.assertNotNull(user2.getIdUser());
+        Assert.assertNotNull(user2.getId_user());
 
         //La permission à ajouter n'est pas valide
         Exception exceptionPermission = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(user2, "WWW"));
