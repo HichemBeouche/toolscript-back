@@ -12,33 +12,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
-@Controller
-@RequestMapping(path="/stories")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping(path="/")
 public class StoryController {
 	  @Autowired
 	  private StoryRepository storyRepository;
 	
 	  //To display all the user's stories
-	  @GetMapping(path="")
-	  public @ResponseBody Iterable<Story> getAllStories(@RequestBody User user) {
-		  return storyRepository.findAllForUser(user.getId_user());
+	  @GetMapping(path="stories/{id_user}")
+	  public @ResponseBody Iterable<Story> getAllStories(@PathVariable Long id_user) {
+		  return storyRepository.findAllForUser(id_user);
 	  }
 
 	  //To display a story
-	  @GetMapping(path="/{id_story}")
+	  @GetMapping(path="story/{id_story}")
 	  public @ResponseBody Optional<Story> getStoryById(@PathVariable Integer id_story) {
 	    return storyRepository.findById(id_story);
 	  }
 
 	  //To create a story
-	  @PostMapping("/create")
+	  @PostMapping("story/create")
 	  public Story createStory(@RequestBody Story newStory) {
 		  return storyRepository.save(newStory);
 	  }
 
 	  //To edit a story
-	  @PutMapping(path="/{id_story}/edit")
+	  @PutMapping(path="story/{id_story}/edit")
 	  public ResponseEntity<?> editStory (@PathVariable Integer id_story, @RequestBody Story newStory) {
 	  	if (id_story.equals(newStory.getId()) && storyRepository.findById(id_story).isPresent()) {
 	  		Story updatedStory = storyRepository.findById(id_story).get();
@@ -56,7 +56,7 @@ public class StoryController {
 	  }
 
 	  //To delete a story
-	  @DeleteMapping("/{id_story}/delete")
+	  @DeleteMapping("story/{id_story}/delete")
 	  public Map<String, Boolean> deleteStory(@PathVariable Integer id_story) {
 		  Map<String, Boolean> response = new HashMap<>();
 	  	  if (storyRepository.findById(id_story).isPresent()) {
