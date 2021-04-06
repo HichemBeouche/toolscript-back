@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.api.toolscript.models.Story;
-import com.api.toolscript.models.User;
+import com.api.toolscript.payload.response.MessageResponse;
 import com.api.toolscript.repository.StoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -32,9 +32,25 @@ public class StoryController {
 	  }
 
 	  //To create a story
-	  @PostMapping("story/create")
-	  public Story createStory(@RequestBody Story newStory) {
-		  return storyRepository.save(newStory);
+	  @PostMapping("story/{id_user}/create")
+	  public ResponseEntity<?> createStory(@PathVariable Long id_user, @RequestBody Story story) {
+	  	if(story.getTitle() == null || story.getTitle().isBlank()) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: Le titre ne peut pas être vide!"));
+	  	} else if (story.getTitle().length() > 40){
+		return ResponseEntity.badRequest().body(
+				new MessageResponse("Error: Le titre ne peut pas dépasser 40 caractères!"));
+		} else if (story.getDesc() != null && story.getDesc().length() > 200){
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: La description ne peut pas dépasser 200 caractères!"));
+	  	} else if (id_user == null) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("L'auteur ne peut pas être null"));
+		}
+	  	Story newStory = Story.create(story.getTitle(), story.getDesc(), id_user);
+	  	Story s = storyRepository.save(newStory);
+	  	return new ResponseEntity<Story>(s, HttpStatus.OK);
+
 	  }
 
 	  //To edit a story

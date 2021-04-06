@@ -35,7 +35,7 @@ public class storiesCRUDTests {
         user.setUsername("testUser"+new Random().nextInt());
         userRepository.save(user);
         Assert.assertNotNull(user.getId_user());
-        story = Story.create("Un titre", null, user);
+        story = Story.create("Un titre", null, user.getId_user());
         storyRepository.save(story);
         Assert.assertNotNull(story.getId());
     }
@@ -43,15 +43,15 @@ public class storiesCRUDTests {
     @Test
     public void testCreate() {
         //Le titre est null ou "" ou " "
-        Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(null, null, null));
+        Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(null, null, -1));
         Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Le titre ne peut être vide"));
-        Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("", null, null));
+        Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("", null, -1));
         Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Le titre ne peut être vide"));
-        Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(" ", null, null));
+        Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(" ", null, -1));
         Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Le titre ne peut être vide"));
 
         //L'auteur est null
-        Exception exceptionAuteurNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", null, null));
+        Exception exceptionAuteurNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", null, -1));
         Assert.assertTrue((exceptionAuteurNull.getMessage()).contains("L'auteur ne peut être null"));
 
         //Création OK
@@ -60,7 +60,7 @@ public class storiesCRUDTests {
         userRepository.save(user);
         Assert.assertNotNull(user.getId_user());
         Assert.assertEquals(0, storyRepository.findAllForUser(user.getId_user()).size());
-        story = Story.create("aTitle", null, user);
+        story = Story.create("aTitle", null, user.getId_user());
         storyRepository.save(story);
         Assert.assertNotNull(story.getId());
         Assert.assertEquals("aTitle", story.getTitle());
@@ -71,11 +71,11 @@ public class storiesCRUDTests {
 
         //Longueur de champs non valide pour la BDD
         //Le titre est trop long
-        Exception exceptionTitreTropLong = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("ccccccccccccccccccccccccccccccccccccccccc", null, user));
+        Exception exceptionTitreTropLong = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("ccccccccccccccccccccccccccccccccccccccccc", null, user.getId_user()));
         Assert.assertTrue((exceptionTitreTropLong.getMessage()).contains("Le titre ne peut dépasser 40 caractères"));
 
         //La description est trop longue
-        Exception exceptionDescriptionTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", user));
+        Exception exceptionDescriptionTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", user.getId_user()));
         Assert.assertTrue((exceptionDescriptionTropLongue.getMessage()).contains("La description ne peut dépasser 200 caractères"));
 
         //L'histoire est trop longue
@@ -169,7 +169,7 @@ public class storiesCRUDTests {
         Assert.assertEquals(1, story.getUserIds().size());
 
         //L'utilisateur à ajouter est null
-        Exception exceptionUser = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(null, "WWW"));
+        Exception exceptionUser = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(-1, "WWW"));
         Assert.assertTrue((exceptionUser.getMessage()).contains("L'utilisateur ne peut être null"));
 
         //Nouvel utilisateur
@@ -179,11 +179,11 @@ public class storiesCRUDTests {
         Assert.assertNotNull(user2.getId_user());
 
         //La permission à ajouter n'est pas valide
-        Exception exceptionPermission = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(user2, "WWW"));
+        Exception exceptionPermission = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(user2.getId_user(), "WWW"));
         Assert.assertTrue((exceptionPermission.getMessage()).contains("La permission renseignée n'est pas disponible"));
 
         //Ajout OK
-        story.addUserPerm(user2, "W");
+        story.addUserPerm(user2.getId_user(), "W");
         Assert.assertEquals(2, story.getUserIds().size());
     }
 }

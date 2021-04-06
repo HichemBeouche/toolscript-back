@@ -58,18 +58,15 @@ public class Story {
 
 	//Setters
     public void setTitle(String newTitle) {
-        if (newTitle == null || newTitle.isBlank() || newTitle.length() > 40) {throw new IllegalArgumentException("Le titre ne peut être vide et ne peut dépasser 40 caractères");}
-        else { this.title = newTitle; }
+        this.title = newTitle;
     }
 
     public void setDesc(String newDesc) {
-        if (newDesc == null || newDesc.isBlank() || newDesc.length() > 200) {throw new IllegalArgumentException("La description ne peut être vide et ne peut dépasser 200 caractères");}
-        else { this.desc = newDesc; }
+        this.desc = newDesc;
     }
 	
 	public void setStory(String newStory) {
-        if (newStory == null || newStory.isBlank() || newStory.length() > 40) {throw new IllegalArgumentException("L'histoire ne peut être vide et ne peut dépasser 40 caractères");}
-        else { this.story = newStory; }
+        this.story = newStory;
     }
 
     /*
@@ -79,24 +76,15 @@ public class Story {
 	
 	
 	//Methods
-    public static Story create(String title, String desc, User author) {
-        if (title == null || title.isBlank()) { throw new IllegalArgumentException("Le titre ne peut être vide");}
-        else if (author == null) { throw new IllegalArgumentException("L'auteur ne peut être null");}
-        else if (title.length() > 40) {throw new IllegalArgumentException("Le titre ne peut dépasser 40 caractères");}
-        else if (desc != null && desc.length() > 200) {throw new IllegalArgumentException("La description ne peut dépasser 200 caractères");}
-        else {
+    public static Story create(String title, String desc, long id_user) {
             Story s = new Story();
             s.setTitle(title);
-            if (desc != null && !desc.isBlank()) { s.setDesc(desc); }
-            s.addUserPerm(author, "W");
+            s.setDesc(desc);
+            s.addUserPerm(id_user, "W");
             return s;
-        }
     }
 
-    public void addUserPerm(User user, String perm) {
-        if (user == null) { throw new IllegalArgumentException("L'utilisateur ne peut être null"); }
-        //Condition à modifier une fois les différentes permissions discutées
-        else if (perm == null || perm.length() > 2) { throw new IllegalArgumentException("La permission renseignée n'est pas disponible"); }
-        else { this.users.add(new UserId(user.getId_user(), perm)); }
+    public void addUserPerm(long id_user, String perm) {
+        this.users.add(new UserId(id_user, perm));
     }
 }
