@@ -1,7 +1,5 @@
-package ToolScript.Server.api.stories;
+package com.api.toolscript.models;
 
-import com.api.toolscript.models.Story;
-import com.api.toolscript.models.User;
 import com.api.toolscript.repository.StoryRepository;
 import com.api.toolscript.repository.UserRepository;
 import org.junit.Assert;
@@ -12,14 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @DataJdbcTest
 @AutoConfigureTestDatabase (replace = AutoConfigureTestDatabase.Replace.NONE)
 //@Commit
-public class storiesCRUDTests {
+public class StoryCRUDTests {
     @Autowired
     private StoryRepository storyRepository;
 
@@ -44,15 +41,29 @@ public class storiesCRUDTests {
     public void testCreate() {
         //Le titre est null ou "" ou " "
         Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(null, null, -1));
-        Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Le titre ne peut être vide"));
+        Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Error: Le titre ne peut être vide !"));
         Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("", null, -1));
-        Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Le titre ne peut être vide"));
+        Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Error: Le titre ne peut être vide !"));
         Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(" ", null, -1));
-        Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Le titre ne peut être vide"));
+        Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Error: Le titre ne peut être vide !"));
 
         //L'auteur est null
         Exception exceptionAuteurNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", null, -1));
-        Assert.assertTrue((exceptionAuteurNull.getMessage()).contains("L'auteur ne peut être null"));
+        Assert.assertTrue((exceptionAuteurNull.getMessage()).contains("Error: L'identifiant de l'auteur est incorrect !"));
+
+        //Longueur de champs non valide pour la BDD
+        //Le titre est trop long
+        Exception exceptionTitreTropLong = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("ccccccccccccccccccccccccccccccccccccccccc", null, user.getId_user()));
+        Assert.assertTrue((exceptionTitreTropLong.getMessage()).contains("Error: Le titre ne peut dépasser 40 caractères !"));
+
+        //La description est trop longue
+        Exception exceptionDescriptionTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", user.getId_user()));
+        Assert.assertTrue((exceptionDescriptionTropLongue.getMessage()).contains("Error: La description ne peut dépasser 200 caractères !"));
+
+        //L'histoire est trop longue
+        Exception exceptionHistoireTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory("ccccccccccccccccccccccccccccccccccccccccc"));
+        Assert.assertTrue((exceptionHistoireTropLongue.getMessage()).contains("Error: L'histoire ne peut dépasser 40 caractères !"));
+
 
         //Création OK
         user = new User();
@@ -69,18 +80,6 @@ public class storiesCRUDTests {
         Assert.assertEquals(1, storyRepository.findAllForUser(user.getId_user()).size());
         Assert.assertEquals(user.getId_user(), userRepository.findAllById(story.getUserIds()).iterator().next().getId_user());
 
-        //Longueur de champs non valide pour la BDD
-        //Le titre est trop long
-        Exception exceptionTitreTropLong = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("ccccccccccccccccccccccccccccccccccccccccc", null, user.getId_user()));
-        Assert.assertTrue((exceptionTitreTropLong.getMessage()).contains("Le titre ne peut dépasser 40 caractères"));
-
-        //La description est trop longue
-        Exception exceptionDescriptionTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", "ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", user.getId_user()));
-        Assert.assertTrue((exceptionDescriptionTropLongue.getMessage()).contains("La description ne peut dépasser 200 caractères"));
-
-        //L'histoire est trop longue
-        Exception exceptionHistoireTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory("ccccccccccccccccccccccccccccccccccccccccc"));
-        Assert.assertTrue((exceptionHistoireTropLongue.getMessage()).contains("L'histoire ne peut être vide et ne peut dépasser 40 caractères"));
     }
 
 
@@ -106,42 +105,24 @@ public class storiesCRUDTests {
         //Longueur de champs non valide pour la BDD
         //Le nouveau titre est null
         Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> story.setTitle(null));
-        Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Le titre ne peut être vide et ne peut dépasser 40 caractères"));
+        Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Error: Le titre ne peut être vide !"));
         //Le nouveau titre est vide
         Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> story.setTitle(""));
-        Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Le titre ne peut être vide et ne peut dépasser 40 caractères"));
+        Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Error: Le titre ne peut être vide !"));
         //Le nouveau titre est un espace
         Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> story.setTitle(" "));
-        Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Le titre ne peut être vide et ne peut dépasser 40 caractères"));
+        Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Error: Le titre ne peut être vide !"));
         //Le nouveau titre est trop long
         Exception exceptionTitreTropLong = Assert.assertThrows(IllegalArgumentException.class, () -> story.setTitle("ccccccccccccccccccccccccccccccccccccccccc"));
-        Assert.assertTrue((exceptionTitreTropLong.getMessage()).contains("Le titre ne peut être vide et ne peut dépasser 40 caractères"));
+        Assert.assertTrue((exceptionTitreTropLong.getMessage()).contains("Error: Le titre ne peut dépasser 40 caractères !"));
 
-        //La nouvelle description est null
-        Exception exceptionDescriptionNull = Assert.assertThrows(IllegalArgumentException.class, () -> story.setDesc(null));
-        Assert.assertTrue((exceptionDescriptionNull.getMessage()).contains("La description ne peut être vide et ne peut dépasser 200 caractères"));
-        //La nouvelle description est vide
-        Exception exceptionDescriptionVide = Assert.assertThrows(IllegalArgumentException.class, () -> story.setDesc(""));
-        Assert.assertTrue((exceptionDescriptionVide.getMessage()).contains("La description ne peut être vide et ne peut dépasser 200 caractères"));
-        //La nouvelle description est un espace
-        Exception exceptionDescriptionEspace = Assert.assertThrows(IllegalArgumentException.class, () -> story.setDesc(" "));
-        Assert.assertTrue((exceptionDescriptionEspace.getMessage()).contains("La description ne peut être vide et ne peut dépasser 200 caractères"));
         //La nouvelle description est trop longue
         Exception exceptionDescriptionTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> story.setDesc("ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"));
-        Assert.assertTrue((exceptionDescriptionTropLongue.getMessage()).contains("La description ne peut être vide et ne peut dépasser 200 caractères"));
+        Assert.assertTrue((exceptionDescriptionTropLongue.getMessage()).contains("Error: La description ne peut dépasser 200 caractères !"));
 
-        //La nouvelle histoire est null
-        Exception exceptionHistoireNull = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory(null));
-        Assert.assertTrue((exceptionHistoireNull.getMessage()).contains("L'histoire ne peut être vide et ne peut dépasser 40 caractères"));
-        //La nouvelle histoire est vide
-        Exception exceptionHistoireVide = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory(""));
-        Assert.assertTrue((exceptionHistoireVide.getMessage()).contains("L'histoire ne peut être vide et ne peut dépasser 40 caractères"));
-        //La nouvelle histoire est un espace
-        Exception exceptionHistoireEspace = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory(" "));
-        Assert.assertTrue((exceptionHistoireEspace.getMessage()).contains("L'histoire ne peut être vide et ne peut dépasser 40 caractères"));
         //La nouvelle histoire est trop longue
         Exception exceptionHistoireTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory("ccccccccccccccccccccccccccccccccccccccccc"));
-        Assert.assertTrue((exceptionHistoireTropLongue.getMessage()).contains("L'histoire ne peut être vide et ne peut dépasser 40 caractères"));
+        Assert.assertTrue((exceptionHistoireTropLongue.getMessage()).contains("Error: L'histoire ne peut dépasser 40 caractères !"));
 
         //Modification OK
         Assert.assertEquals("Un titre", story.getTitle());
@@ -170,7 +151,7 @@ public class storiesCRUDTests {
 
         //L'utilisateur à ajouter est null
         Exception exceptionUser = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(-1, "WWW"));
-        Assert.assertTrue((exceptionUser.getMessage()).contains("L'utilisateur ne peut être null"));
+        Assert.assertTrue((exceptionUser.getMessage()).contains("Error: L'identifiant de l'utilisateur est incorrect !"));
 
         //Nouvel utilisateur
         User user2 = new User();
@@ -180,7 +161,7 @@ public class storiesCRUDTests {
 
         //La permission à ajouter n'est pas valide
         Exception exceptionPermission = Assert.assertThrows(IllegalArgumentException.class, () -> story.addUserPerm(user2.getId_user(), "WWW"));
-        Assert.assertTrue((exceptionPermission.getMessage()).contains("La permission renseignée n'est pas disponible"));
+        Assert.assertTrue((exceptionPermission.getMessage()).contains("Error: La permission renseignée n'est pas disponible !"));
 
         //Ajout OK
         story.addUserPerm(user2.getId_user(), "W");
