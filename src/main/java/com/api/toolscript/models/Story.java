@@ -37,6 +37,10 @@ public class Story {
         return idStory;
     }
 
+    public Integer getIdStory() {
+        return idStory;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -86,5 +90,16 @@ public class Story {
 
     public void addUserPerm(long id_user, String perm) {
         this.users.add(new UserId(id_user, perm));
+    }
+
+    @Override
+    public String toString() {
+        return "Story{" +
+                "idStory=" + idStory +
+                ", title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", story='" + story + '\'' +
+                ", users=" + users +
+                '}';
     }
 }
