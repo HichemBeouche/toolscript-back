@@ -1,0 +1,99 @@
+package com.api.toolscript.controllers;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.api.toolscript.models.Story;
+import com.api.toolscript.models.Submodule;
+import com.api.toolscript.models.User;
+import com.api.toolscript.payload.response.MessageResponse;
+import com.api.toolscript.repository.SubmoduleRepository;
+
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/submodule")
+public class SubmoduleController {
+	
+	@Autowired
+	private SubmoduleRepository submoduleRepository;
+	
+	@GetMapping(path="/{id_submodule}")
+	public @ResponseBody Optional<Submodule> getSubmoduleById(@PathVariable Long id_submodule){
+		return submoduleRepository.findById(id_submodule);
+	}
+	
+	@GetMapping(path="/story_submodules")
+	public @ResponseBody Iterable<Submodule> getSubmodulesStory(@PathVariable Long id_story){
+		return submoduleRepository.findAllByStory(id_story);
+	}
+	
+	
+	
+	@PostMapping("/{id_module}/createSubmodule")
+	public ResponseEntity<?> createSubmodule(@PathVariable Long id_module, @RequestBody Submodule submodule){
+		if(id_module == null) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: l'id_module doit être renseigné !"));
+		}else if (submodule.getName_submodule() == null || submodule.getName_submodule().isBlank()) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: Le titre ne peut pas être vide!"));
+		}else if (submodule.getName_submodule().length() > 40) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: Le titre ne peut pas dépasser 40 caractères!"));
+		}
+		submoduleRepository.save(submodule);
+		return new ResponseEntity<Submodule>(submoduleRepository.save(submodule), HttpStatus.OK);
+			
+	}
+	
+	@DeleteMapping("/{id_submodule}/delete")
+	public ResponseEntity<?> deleteSubmodule(@PathVariable Long id_submodule){
+		if(submoduleRepository.findById(id_submodule).isPresent()) {
+			submoduleRepository.delete(submoduleRepository.findById(id_submodule).get());
+			return ResponseEntity.ok(new MessageResponse("Submodule supprimé !"));
+		}else {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Submodule non supprimé, Submodule introuvable !"));
+		}
+	}
+	
+	@DeleteMapping("/{id_submodule}/delete")
+	public ResponseEntity<?> deleteAllSubmodulesStory(@PathVariable Long id_story){
+		if(id_story == null) {
+			return ResponseEntity.badRequest().body(
+					new MessageResponse("Error: l'id_story doit être renseigné !"));
+		}else {
+			submoduleRepository.deleteAllByStory(id_story);
+			return ResponseEntity.ok(new MessageResponse("Tous les submodules de l'histoire renseignée ont été supprimés !"));
+		}
+	}
+	
+	@PutMapping("/changeName")
+	public ResponseEntity<?> changeName (@RequestBody Submodule submodule){
+		Submodule res = submoduleRepository.findById(submodule.getId_submodule()).get();
+		res.setName_submodule(submodule.getName_submodule());
+		submoduleRepository.save(res);
+		return ResponseEntity.ok(new MessageResponse("nom du submodule modifié !"));
+	}
+	
+	@PutMapping("/changeNote")
+	public ResponseEntity<?> changeNote (@RequestBody Submodule submodule){
+		Submodule res = submoduleRepository.findById(submodule.getId_submodule()).get();
+		res.setNote(submodule.getNote());
+		submoduleRepository.save(res);
+		return ResponseEntity.ok(new MessageResponse("note modifié !"));
+	}
+}
