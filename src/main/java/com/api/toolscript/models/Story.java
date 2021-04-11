@@ -69,7 +69,7 @@ public class Story {
 	
 	public void setStory(String newStory) {
         //Condition à modifier une fois le stockage de l'histoire discuté
-        if (newStory.length() > 40) {throw new IllegalArgumentException("Error: L'histoire ne peut dépasser 40 caractères !");}
+        if (Long.valueOf(newStory.length()) > Long.parseLong("4294967295")) {throw new IllegalArgumentException("Error: L'histoire ne peut dépasser 4 294 967 295 caractères !");}
         else { this.story = newStory; }
     }
 
@@ -85,7 +85,7 @@ public class Story {
         Story s = new Story();
         s.setTitle(title);
         s.setDesc(desc);
-        s.addUserPerm(idAuthor, "W");
+        s.addUserPerm(idAuthor, "A");
         return s;
     }
 

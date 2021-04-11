@@ -22,6 +22,12 @@ public class StoryController {
 	  	return storyRepository.findAllForUser(id_user);
 	  }
 
+	  //To display all the stories shared to the user
+	  @GetMapping(path="sharedstories/{id_user}")
+	  public @ResponseBody Iterable<Story> getAllSharedStories(@PathVariable Long id_user) {
+	  	return storyRepository.findAllSharedToUser(id_user);
+	  }
+
 	  //To display a story
 	  @GetMapping(path="story/{id_story}")
 	  public @ResponseBody Optional<Story> getStoryById(@PathVariable Integer id_story) {

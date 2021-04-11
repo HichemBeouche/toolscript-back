@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface StoryRepository extends CrudRepository<Story, Integer> {
 	
-	@Query("Select s.* from Story s where s.id_story in (select id_story from Story_User where id_user = :idUser)")
+	@Query("Select s.* from Story s where s.id_story in (select id_story from Story_User where id_user = :idUser and permission='A')")
 	List<Story> findAllForUser(@Param("idUser") Long idUser);
+
+	@Query("Select s.* from Story s where s.id_story in (select id_story from Story_User where id_user = :idUser and permission!='A')")
+	List<Story> findAllSharedToUser(@Param("idUser") Long id_user);
 }
