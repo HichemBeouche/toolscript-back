@@ -1,11 +1,16 @@
 package com.api.toolscript.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.relational.core.mapping.Table;
+
+@Entity
+@Table(value = "Submodule")
 public class Submodule {
 	
 	@Id
@@ -22,7 +27,7 @@ public class Submodule {
 	private String note;
 	
 	@NotBlank
-	private Long id_story;
+	private Long idStory;
 	
 	public Submodule() {
 		
@@ -32,7 +37,7 @@ public class Submodule {
 		this.name_submodule = name_submodule;
 		this.id_module = id_module;
 		this.note = note;
-		this.id_story = id_story;
+		this.idStory = id_story;
 	}
 
 	public Long getId_submodule() {
@@ -67,13 +72,15 @@ public class Submodule {
 		this.note = note;
 	}
 
-	public Long getId_story() {
-		return id_story;
+	public Long getIdStory() {
+		return idStory;
 	}
 
-	public void setId_story(Long id_story) {
-		this.id_story = id_story;
+	public void setIdStory(Long idStory) {
+		this.idStory = idStory;
 	}
+
+	
 	
 	
 	

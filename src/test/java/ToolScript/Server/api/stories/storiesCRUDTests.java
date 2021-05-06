@@ -9,17 +9,21 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
-@DataJdbcTest
-@AutoConfigureTestDatabase (replace = AutoConfigureTestDatabase.Replace.NONE)
-//@Commit
+@SpringBootTest(classes= {com.api.toolscript.ToolScriptApp.class})
+@ActiveProfiles("test")
 public class storiesCRUDTests {
+	
+	@Test
+	public void contextLoads() {
+	}
+
     @Autowired
     private StoryRepository storyRepository;
 
@@ -31,6 +35,8 @@ public class storiesCRUDTests {
 
     @Before
     public void init() {
+        userRepository.deleteAll();
+        storyRepository.deleteAll();
         user = new User();
         user.setUsername("testUser"+new Random().nextInt());
         userRepository.save(user);

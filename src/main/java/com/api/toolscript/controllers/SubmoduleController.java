@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.toolscript.models.Story;
 import com.api.toolscript.models.Submodule;
-import com.api.toolscript.models.User;
 import com.api.toolscript.payload.response.MessageResponse;
 import com.api.toolscript.repository.SubmoduleRepository;
 
@@ -35,14 +33,14 @@ public class SubmoduleController {
 		return submoduleRepository.findById(id_submodule);
 	}
 	
-	@GetMapping(path="/story_submodules")
+	@GetMapping(path="/{idStory}/story_submodules")
 	public @ResponseBody Iterable<Submodule> getSubmodulesStory(@PathVariable Long id_story){
-		return submoduleRepository.findAllByStory(id_story);
+		return submoduleRepository.findAllByIdStory(id_story);
 	}
 	
 	
 	
-	@PostMapping("/{id_module}/createSubmodule")
+	@PostMapping(path="/{id_module}/createSubmodule")
 	public ResponseEntity<?> createSubmodule(@PathVariable Long id_module, @RequestBody Submodule submodule){
 		if(id_module == null) {
 			return ResponseEntity.badRequest().body(
@@ -59,10 +57,10 @@ public class SubmoduleController {
 			
 	}
 	
-	@DeleteMapping("/{id_submodule}/delete")
+	@DeleteMapping(path="/{id_submodule}/delete")
 	public ResponseEntity<?> deleteSubmodule(@PathVariable Long id_submodule){
 		if(submoduleRepository.findById(id_submodule).isPresent()) {
-			submoduleRepository.delete(submoduleRepository.findById(id_submodule).get());
+			submoduleRepository.deleteById(id_submodule);
 			return ResponseEntity.ok(new MessageResponse("Submodule supprimé !"));
 		}else {
 			return ResponseEntity.badRequest().body(
@@ -70,18 +68,18 @@ public class SubmoduleController {
 		}
 	}
 	
-	@DeleteMapping("/{id_submodule}/delete")
+	@DeleteMapping(path="/{id_submodule}/deleteAllByStory")
 	public ResponseEntity<?> deleteAllSubmodulesStory(@PathVariable Long id_story){
 		if(id_story == null) {
 			return ResponseEntity.badRequest().body(
 					new MessageResponse("Error: l'id_story doit être renseigné !"));
 		}else {
-			submoduleRepository.deleteAllByStory(id_story);
+			submoduleRepository.deleteById(id_story);
 			return ResponseEntity.ok(new MessageResponse("Tous les submodules de l'histoire renseignée ont été supprimés !"));
 		}
 	}
 	
-	@PutMapping("/changeName")
+	@PutMapping(path="/changeName")
 	public ResponseEntity<?> changeName (@RequestBody Submodule submodule){
 		Submodule res = submoduleRepository.findById(submodule.getId_submodule()).get();
 		res.setName_submodule(submodule.getName_submodule());
@@ -89,7 +87,7 @@ public class SubmoduleController {
 		return ResponseEntity.ok(new MessageResponse("nom du submodule modifié !"));
 	}
 	
-	@PutMapping("/changeNote")
+	@PutMapping(path="/changeNote")
 	public ResponseEntity<?> changeNote (@RequestBody Submodule submodule){
 		Submodule res = submoduleRepository.findById(submodule.getId_submodule()).get();
 		res.setNote(submodule.getNote());
