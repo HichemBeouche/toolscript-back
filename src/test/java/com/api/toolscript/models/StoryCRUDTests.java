@@ -1,7 +1,5 @@
-package ToolScript.Server.api.stories;
+package com.api.toolscript.models;
 
-import com.api.toolscript.models.Story;
-import com.api.toolscript.models.User;
 import com.api.toolscript.repository.StoryRepository;
 import com.api.toolscript.repository.UserRepository;
 import org.junit.Assert;
@@ -12,13 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= {com.api.toolscript.ToolScriptApp.class})
 @ActiveProfiles("test")
-public class storiesCRUDTests {
+public class StoryCRUDTests {
 
 	@Test
 	public void contextLoads() {

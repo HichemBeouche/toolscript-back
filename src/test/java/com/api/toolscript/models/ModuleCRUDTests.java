@@ -8,15 +8,14 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
-@DataJdbcTest
-@AutoConfigureTestDatabase (replace = AutoConfigureTestDatabase.Replace.NONE)
-//@Commit
+@SpringBootTest(classes= {com.api.toolscript.ToolScriptApp.class})
+@ActiveProfiles("test")
 public class ModuleCRUDTests {
     @Autowired
     private ModuleRepository moduleRepository;
