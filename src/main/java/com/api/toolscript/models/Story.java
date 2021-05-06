@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,34 +61,43 @@ public class Story {
 
 	//Setters
     public void setTitle(String newTitle) {
-        this.title = newTitle;
+        if (newTitle == null || newTitle.isBlank()) {throw new IllegalArgumentException("Error: Le titre ne peut être vide !");}
+        else if (newTitle.length() > 40) {throw new IllegalArgumentException("Error: Le titre ne peut dépasser 40 caractères !");}
+        else { this.title = newTitle; }
     }
 
     public void setDesc(String newDesc) {
-        this.desc = newDesc;
+        if (newDesc.length() > 200) {throw new IllegalArgumentException("Error: La description ne peut dépasser 200 caractères !");}
+        else { this.desc = newDesc; }
     }
 	
 	public void setStory(String newStory) {
-        this.story = newStory;
+        //Condition à modifier une fois le stockage de l'histoire discuté
+        if (Long.valueOf(newStory.length()) > Long.parseLong("4294967295")) {throw new IllegalArgumentException("Error: L'histoire ne peut dépasser 4 294 967 295 caractères !");}
+        else { this.story = newStory; }
     }
 
     /*
-	public void setUsersIds(Set<UserId> users) {
+    public void setUsersIds(Set<UserId> users) {
         this.users = users;
     }*/
 	
 	
 	//Methods
-    public static Story create(String title, String desc, long id_user) {
-            Story s = new Story();
-            s.setTitle(title);
-            s.setDesc(desc);
-            s.addUserPerm(id_user, "W");
-            return s;
+    public static Story create(String title, String desc, long idAuthor) {
+        if (idAuthor <= 0) { throw new IllegalArgumentException("Error: L'identifiant de l'auteur est incorrect !");}
+        Story s = new Story();
+        s.setTitle(title);
+        s.setDesc(desc);
+        s.addUserPerm(idAuthor, "A");
+        return s;
     }
 
-    public void addUserPerm(long id_user, String perm) {
-        this.users.add(new UserId(id_user, perm));
+    public void addUserPerm(long idUser, String perm) {
+        if (idUser <= 0) { throw new IllegalArgumentException("Error: L'identifiant de l'utilisateur est incorrect !"); }
+        //Condition à modifier une fois les différentes permissions discutées
+        else if (perm == null || perm.length() > 2) { throw new IllegalArgumentException("Error: La permission renseignée n'est pas disponible !"); }
+        else { this.users.add(new UserId(idUser, perm)); }
     }
 
     @Override
