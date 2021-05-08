@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+
+
 import java.util.List;
 
 @Table(value = "Module")
@@ -22,6 +24,8 @@ public class Module {
     private Integer idParent;
 
     private List<Module> children;
+    
+    private transient List<Submodule> TabSubmodule;
 
 
     //Constructors
@@ -54,15 +58,26 @@ public class Module {
     public List<Module> getChildren() {
         return children;
     }
+    
+    public List<Submodule> getTabSubmodule() {
+		return TabSubmodule;
+	}
 
 
-    //Setters
+	
+
+
+	//Setters
     public void setName(String newName) {
         if (newName == null || newName.isBlank()) {throw new IllegalArgumentException("Error: Le nom ne peut être vide !");}
         else if (newName.length() > 40) {throw new IllegalArgumentException("Error: Le nom ne peut dépasser 40 caractères !");}
         else { this.name = newName; }
     }
     public void setChildren(List<Module> children) { this.children = children; }
+    
+    public void setTabSubmodule(List<Submodule> tabSubmodule) {
+		TabSubmodule = tabSubmodule;
+	}
 
 
     //Methods

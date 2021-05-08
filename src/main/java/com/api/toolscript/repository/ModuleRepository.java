@@ -13,4 +13,6 @@ public interface ModuleRepository extends CrudRepository<Module, Integer> {
 
 	@Query("Select m.* from Module m where m.id_story = :idStory and id_parent is null")
 	List<Module> findAllMainModulesForStory(@Param("idStory") Integer idStory);
+	
+	List<Module>findAllByIdStory(Long id_story);
 }
