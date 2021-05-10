@@ -47,7 +47,7 @@ public class StoryController {
 		  modules.stream().forEach(module -> {
 			  List<Submodule> s = submoduleRepository.findAllByIdModule(module.getId());
 			  module.setTabSubmodule(s);
-		  }); 
+		  });
 		  return modules;
 	  }
 	  

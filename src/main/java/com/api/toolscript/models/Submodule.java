@@ -23,7 +23,7 @@ public class Submodule {
 	
 	@NotBlank
 	@Column(value = "id_module")
-	private Long idModule;
+	private Integer idModule;
 	
 	@Lob
 	private String note;
@@ -35,7 +35,7 @@ public class Submodule {
 		
 	}
 	
-	public Submodule(String name_submodule, long id_module, String note, long id_story) {
+	public Submodule(String name_submodule, Integer id_module, String note, long id_story) {
 		this.name_submodule = name_submodule;
 		this.idModule = id_module;
 		this.note = note;
@@ -58,11 +58,11 @@ public class Submodule {
 		this.name_submodule = name_submodule;
 	}
 
-	public Long getIdModule() {
+	public Integer getIdModule() {
 		return idModule;
 	}
 
-	public void setIdModule(Long idModule) {
+	public void setIdModule(Integer idModule) {
 		this.idModule = idModule;
 	}
 
