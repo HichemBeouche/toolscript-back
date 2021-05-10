@@ -24,7 +24,8 @@ public class Module {
     @Transient
     private List<Module> children;
 
-    private transient List<Submodule> TabSubmodule;
+    @Transient
+    private List<Submodule> TabSubmodule;
 
 
     //Constructors
