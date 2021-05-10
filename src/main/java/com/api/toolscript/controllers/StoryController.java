@@ -51,7 +51,7 @@ public class StoryController {
 		  return modules;
 	  }
 	  
-	  @PutMapping(path="story/{TabSubmodule}/saveModulesAndSubmodules")
+	  @PutMapping(path="story/saveModulesAndSubmodules")
 	  public ResponseEntity<?> saveModulesAndSubmodules(@RequestBody List<Module> modules){
 		  modules.stream().forEach(module -> {
 			  Module res = moduleRepository.findById(module.getId()).get();

@@ -42,6 +42,9 @@ public class Module {
     public Integer getId() {
         return idModule;
     }
+    public Integer getIdModule() {
+        return idModule;
+    }
 
     public String getName() { return name; }
 

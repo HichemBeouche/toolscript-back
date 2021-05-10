@@ -49,7 +49,7 @@ public class ModuleController {
     //To edit a module
     @PutMapping(path="module/{id_module}/edit")
     public ResponseEntity<?> editModule (@PathVariable Integer id_module, @RequestBody Module newModule) {
-        if (id_module.equals(newModule.getId()) && moduleRepository.findById(id_module).isPresent()) {
+        if (id_module.equals(id_module) && moduleRepository.findById(id_module).isPresent()) {
             Module updatedModule = moduleRepository.findById(id_module).get();
             updatedModule.setName(newModule.getName());
             moduleRepository.save(updatedModule);
