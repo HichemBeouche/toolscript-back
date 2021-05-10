@@ -24,6 +24,8 @@ public class Module {
     @Transient
     private List<Module> children;
 
+    private transient List<Submodule> TabSubmodule;
+
 
     //Constructors
     private Module(Integer idStory, Integer idParent) {
@@ -52,6 +54,10 @@ public class Module {
 
     public List<Module> getChildren() { return children; }
 
+    public List<Submodule> getTabSubmodule() {
+		return TabSubmodule;
+	}
+
 
     //Setters
     public void setName(String newName) {
@@ -60,6 +66,8 @@ public class Module {
         else { this.name = newName; }
     }
     public void setChildren(List<Module> children) { this.children = children; }
+
+    public void setTabSubmodule(List<Submodule> tabSubmodule) { TabSubmodule = tabSubmodule; }
 
 
     //Methods

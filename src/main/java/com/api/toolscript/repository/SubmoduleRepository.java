@@ -12,5 +12,6 @@ import com.api.toolscript.models.Submodule;
 public interface SubmoduleRepository extends JpaRepository<Submodule, Long> {
 	Optional<Submodule> findById(Long id_submodule);
 	List<Submodule> findAllByIdStory(Long id_story);
+	List<Submodule> findAllByIdModule(Integer id_module);
 	
 }

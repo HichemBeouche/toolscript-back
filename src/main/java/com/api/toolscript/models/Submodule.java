@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Entity
@@ -21,7 +22,8 @@ public class Submodule {
 	private String name_submodule;
 	
 	@NotBlank
-	private Long id_module;
+	@Column(value = "id_module")
+	private Long idModule;
 	
 	@Lob
 	private String note;
@@ -35,7 +37,7 @@ public class Submodule {
 	
 	public Submodule(String name_submodule, long id_module, String note, long id_story) {
 		this.name_submodule = name_submodule;
-		this.id_module = id_module;
+		this.idModule = id_module;
 		this.note = note;
 		this.idStory = id_story;
 	}
@@ -56,12 +58,12 @@ public class Submodule {
 		this.name_submodule = name_submodule;
 	}
 
-	public Long getId_module() {
-		return id_module;
+	public Long getIdModule() {
+		return idModule;
 	}
 
-	public void setId_module(Long id_module) {
-		this.id_module = id_module;
+	public void setIdModule(Long idModule) {
+		this.idModule = idModule;
 	}
 
 	public String getNote() {
