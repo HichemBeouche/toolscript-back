@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ModuleRepository extends CrudRepository<Module, Integer> {
-	@Query("Select m.* from Module m where m.id_parent = :idModule)")
+	@Query("Select m.* from Module m where m.id_parent = :idModule")
 	List<Module> findAllChildrenById(@Param("idModule") Integer idModule);
 
-	@Query("Select m.* from Module m where m.id_story = :idStory and id_parent is null")
+	@Query("Select m.* from Module m where m.id_story = :idStory and m.id_parent is null")
 	List<Module> findAllMainModulesForStory(@Param("idStory") Integer idStory);
 }

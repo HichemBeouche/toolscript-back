@@ -67,13 +67,13 @@ public class Story {
     }
 
     public void setDesc(String newDesc) {
-        if (newDesc.length() > 200) {throw new IllegalArgumentException("Error: La description ne peut dépasser 200 caractères !");}
+        if (newDesc != null && newDesc.length() > 200) {throw new IllegalArgumentException("Error: La description ne peut dépasser 200 caractères !");}
         else { this.desc = newDesc; }
     }
 	
 	public void setStory(String newStory) {
         //Condition à modifier une fois le stockage de l'histoire discuté
-        if (Long.valueOf(newStory.length()) > Long.parseLong("4294967295")) {throw new IllegalArgumentException("Error: L'histoire ne peut dépasser 4 294 967 295 caractères !");}
+        if (newStory != null && Long.valueOf(newStory.length()) > Long.parseLong("4294967295")) {throw new IllegalArgumentException("Error: L'histoire ne peut dépasser 4 294 967 295 caractères !");}
         else { this.story = newStory; }
     }
 

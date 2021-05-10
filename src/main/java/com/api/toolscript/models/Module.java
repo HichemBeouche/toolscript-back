@@ -1,9 +1,9 @@
 package com.api.toolscript.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
 import java.util.List;
 
 @Table(value = "Module")
@@ -21,6 +21,7 @@ public class Module {
     @Column(value = "id_parent")
     private Integer idParent;
 
+    @Transient
     private List<Module> children;
 
 
@@ -39,9 +40,7 @@ public class Module {
         return idModule;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public Integer getIdStory() {
         return idStory;
@@ -51,9 +50,7 @@ public class Module {
         return idParent;
     }
 
-    public List<Module> getChildren() {
-        return children;
-    }
+    public List<Module> getChildren() { return children; }
 
 
     //Setters

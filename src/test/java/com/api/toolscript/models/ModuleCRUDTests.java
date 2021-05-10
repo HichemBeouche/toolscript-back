@@ -32,6 +32,10 @@ public class ModuleCRUDTests {
 
     @Before
     public void init() {
+        userRepository.deleteAll();
+        storyRepository.deleteAll();
+        moduleRepository.deleteAll();
+
         user = new User();
         user.setUsername("testUser"+new Random().nextInt());
         userRepository.save(user);
@@ -105,7 +109,6 @@ public class ModuleCRUDTests {
         Assert.assertEquals(1, moduleRepository.findAllMainModulesForStory(story.getId()).size());
         module.setChildren(moduleRepository.findAllChildrenById(module.getId()));
         Assert.assertEquals(0, module.getChildren().size());
-        //Assert.assertNull(module.getChildren());
 
         //Module enfant du module principal de l'histoire
         Module module2 = Module.create("un autre nom", story.getId(), module.getId());
