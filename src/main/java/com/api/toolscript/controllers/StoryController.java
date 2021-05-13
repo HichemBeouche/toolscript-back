@@ -46,6 +46,14 @@ public class StoryController {
 		return storyRepository.findAllForUser(id_user);
 	}
 
+
+	//To display all the username authors
+	@GetMapping(path = "usernameAuthors/{id_story}")
+	public @ResponseBody
+	Iterable<String> getUsernameAuthors(@PathVariable Long id_story) {
+		return storyRepository.getUsernameAuthors(id_story);
+	}
+
 	//To display all the stories shared to the user
 	@GetMapping(path = "sharedstories/{id_user}")
 	public @ResponseBody
