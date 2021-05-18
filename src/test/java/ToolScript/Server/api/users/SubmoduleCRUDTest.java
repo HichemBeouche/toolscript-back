@@ -65,7 +65,7 @@ public class SubmoduleCRUDTest {
 			
 			submodule = new Submodule();
 			submodule.setName_submodule("testSub" + i);
-			submodule.setIdModule(Long.valueOf(module.getId()));
+			submodule.setIdModule(module.getId());
 			submodule.setIdStory(Long.valueOf(story.getId()));
 			submoduleRepository.save(submodule);
 			
@@ -86,7 +86,7 @@ public class SubmoduleCRUDTest {
 	public void testCreateSubmodule() {
 		submoduleRepository.deleteAll();
 		submodule = new Submodule();
-		submodule.setIdModule(Long.valueOf(module.getId()));
+		submodule.setIdModule(module.getId());
 		submodule.setName_submodule("test1");
 		submodule.setIdStory(Long.valueOf(story.getId()));
 		submoduleRepository.save(submodule);
@@ -97,7 +97,7 @@ public class SubmoduleCRUDTest {
 	@Test
 	public void testChangeName() {
 		submodule = new Submodule();
-		submodule.setIdModule(Long.valueOf(module.getId()));
+		submodule.setIdModule(module.getId());
 		submodule.setIdStory(Long.valueOf(story.getId()));
 		submodule.setName_submodule("test");
 		submoduleRepository.save(submodule);
@@ -114,7 +114,7 @@ public class SubmoduleCRUDTest {
 	@Test
 	public void testChangeNote() {
 		submodule = new Submodule();
-		submodule.setIdModule(Long.valueOf(module.getId()));
+		submodule.setIdModule(module.getId());
 		submodule.setIdStory(Long.valueOf(story.getId()));
 		submodule.setNote("test");
 		submoduleRepository.save(submodule);

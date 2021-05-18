@@ -1,11 +1,9 @@
 package com.api.toolscript.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
-
-
 import java.util.List;
 
 @Table(value = "Module")
@@ -23,9 +21,11 @@ public class Module {
     @Column(value = "id_parent")
     private Integer idParent;
 
+    @Transient
     private List<Module> children;
-    
-    private transient List<Submodule> TabSubmodule;
+
+    @Transient
+    private List<Submodule> TabSubmodule;
 
 
     //Constructors
@@ -42,10 +42,11 @@ public class Module {
     public Integer getId() {
         return idModule;
     }
-
-    public String getName() {
-        return name;
+    public Integer getIdModule() {
+        return idModule;
     }
+
+    public String getName() { return name; }
 
     public Integer getIdStory() {
         return idStory;
@@ -55,29 +56,22 @@ public class Module {
         return idParent;
     }
 
-    public List<Module> getChildren() {
-        return children;
-    }
-    
+    public List<Module> getChildren() { return children; }
+
     public List<Submodule> getTabSubmodule() {
 		return TabSubmodule;
 	}
 
 
-	
-
-
-	//Setters
+    //Setters
     public void setName(String newName) {
         if (newName == null || newName.isBlank()) {throw new IllegalArgumentException("Error: Le nom ne peut être vide !");}
         else if (newName.length() > 40) {throw new IllegalArgumentException("Error: Le nom ne peut dépasser 40 caractères !");}
         else { this.name = newName; }
     }
     public void setChildren(List<Module> children) { this.children = children; }
-    
-    public void setTabSubmodule(List<Submodule> tabSubmodule) {
-		TabSubmodule = tabSubmodule;
-	}
+
+    public void setTabSubmodule(List<Submodule> tabSubmodule) { TabSubmodule = tabSubmodule; }
 
 
     //Methods

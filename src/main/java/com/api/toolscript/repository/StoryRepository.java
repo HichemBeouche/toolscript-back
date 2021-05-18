@@ -13,4 +13,7 @@ public interface StoryRepository extends CrudRepository<Story, Integer> {
 
 	@Query("Select s.* from Story s where s.id_story in (select id_story from Story_User where id_user = :idUser and permission!='A')")
 	List<Story> findAllSharedToUser(@Param("idUser") Long id_user);
+
+	@Query("select username from Users, Story_User where Users.id_user = Story_User.id_user and Story_User.permission = 'A' and Story_User.id_story = :idStory;")
+	List<String> getUsernameAuthors(@Param("idStory") Long id_story);
 }

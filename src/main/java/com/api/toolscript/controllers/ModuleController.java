@@ -1,30 +1,29 @@
 package com.api.toolscript.controllers;
 
 import java.util.Optional;
-import com.api.toolscript.models.Story;
 import com.api.toolscript.models.Module;
 import com.api.toolscript.payload.response.MessageResponse;
 import com.api.toolscript.repository.ModuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
-@Controller
-@RequestMapping(path="/modules")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping(path="/")
 public class ModuleController {
     @Autowired
     private ModuleRepository moduleRepository;
 
     //To display all the story's main modules
-    @GetMapping(path="")
-    public @ResponseBody Iterable<Module> getAllMainModules(@RequestBody Story story) {
-        return moduleRepository.findAllMainModulesForStory(story.getId());
+    @GetMapping(path="modules/{id_story}")
+    public @ResponseBody Iterable<Module> getAllMainModules(@PathVariable Integer id_story) {
+        return moduleRepository.findAllMainModulesForStory(id_story);
     }
 
     //To display a module
-    @GetMapping(path="/{id_module}")
+    @GetMapping(path="module/{id_module}")
     public @ResponseBody Optional<Module> getModuleById(@PathVariable Integer id_module) {
         if (moduleRepository.findById(id_module).isPresent()) {
             Module module = moduleRepository.findById(id_module).get();
@@ -35,15 +34,22 @@ public class ModuleController {
     }
 
     //To create a module
-    @PostMapping("/create")
-    public Module createModule(@RequestBody Module newModule) {
-        return moduleRepository.save(newModule);
+    @PostMapping("module/{id_story}/create")
+    public ResponseEntity<?> createModule(@PathVariable Integer id_story, @RequestBody Module module) {
+        try {
+            Module newModule = Module.create(module.getName(), id_story, module.getIdParent());
+            Module m = moduleRepository.save(newModule);
+            return new ResponseEntity<Module>(m, HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
     }
 
     //To edit a module
-    @PutMapping(path="/{id_module}/edit")
+    @PutMapping(path="module/{id_module}/edit")
     public ResponseEntity<?> editModule (@PathVariable Integer id_module, @RequestBody Module newModule) {
-        if (id_module.equals(newModule.getId()) && moduleRepository.findById(id_module).isPresent()) {
+        if (id_module.equals(id_module) && moduleRepository.findById(id_module).isPresent()) {
             Module updatedModule = moduleRepository.findById(id_module).get();
             updatedModule.setName(newModule.getName());
             moduleRepository.save(updatedModule);
@@ -55,7 +61,7 @@ public class ModuleController {
     }
 
     //To delete a module
-    @DeleteMapping("/{id_module}/delete")
+    @DeleteMapping("module/{id_module}/delete")
     public ResponseEntity<?> deleteModule(@PathVariable Integer id_module) {
         if (moduleRepository.findById(id_module).isPresent()) {
             moduleRepository.delete(moduleRepository.findById(id_module).get());

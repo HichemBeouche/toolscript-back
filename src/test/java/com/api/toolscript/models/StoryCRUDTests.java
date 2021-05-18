@@ -32,7 +32,6 @@ public class StoryCRUDTests {
 
     @Before
     public void init() {
-
         userRepository.deleteAll();
         storyRepository.deleteAll();
         user = new User();
@@ -47,16 +46,16 @@ public class StoryCRUDTests {
     @Test
     public void testCreate() {
         //Le titre est null ou "" ou " "
-        Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(null, null, -1));
+        Exception exceptionTitreNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(null, null, 1));
         Assert.assertTrue((exceptionTitreNull.getMessage()).contains("Error: Le titre ne peut être vide !"));
-        Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("", null, -1));
+        Exception exceptionTitreVide = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("", null, 1));
         Assert.assertTrue((exceptionTitreVide.getMessage()).contains("Error: Le titre ne peut être vide !"));
-        Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(" ", null, -1));
+        Exception exceptionTitreEspace = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create(" ", null, 1));
         Assert.assertTrue((exceptionTitreEspace.getMessage()).contains("Error: Le titre ne peut être vide !"));
 
-        //L'auteur est null
-        Exception exceptionAuteurNull = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", null, -1));
-        Assert.assertTrue((exceptionAuteurNull.getMessage()).contains("Error: L'identifiant de l'auteur est incorrect !"));
+        //L'identifiant de l'auteur est inférieur ou égal à 0
+        Exception exceptionAuteurIncorrect = Assert.assertThrows(IllegalArgumentException.class, () -> Story.create("Un titre", null, -1));
+        Assert.assertTrue((exceptionAuteurIncorrect.getMessage()).contains("Error: L'identifiant de l'auteur est incorrect !"));
 
         //Longueur de champs non valide pour la BDD
         //Le titre est trop long
@@ -70,7 +69,6 @@ public class StoryCRUDTests {
         //L'histoire est trop longue
         //Exception exceptionHistoireTropLongue = Assert.assertThrows(IllegalArgumentException.class, () -> story.setStory("ccccccccccccccccccccccccccccccccccccccccc"));
         //Assert.assertTrue((exceptionHistoireTropLongue.getMessage()).contains("Error: L'histoire ne peut dépasser 4 294 967 295 caractères !"));
-
 
         //Création OK
         user = new User();
