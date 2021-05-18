@@ -38,4 +38,88 @@ Executer le Back :
 ## API
 ***
 
-[ENDPOINTS](https://github.com/dengler5u/ProjetAdoption/tree/main/ProjetAdoption_Back#readme)
+## Table des Controllers
+1. [AuthController](#authcontroller)
+2. [ModuleController](#modulecontroller)
+3. [StoryController](#storycontroller)
+4. [SubmoduleController](#submodulecontroller)
+5. [UserController](#usercontroller)
+
+***
+## AuthController
+***
+
+Post
+  - path="/login"
+  - path="/register"
+
+***
+## ModuleController
+***
+
+Get
+  - path="/module/{id_module}"
+  - path="/modules/{id_story}"
+
+Post
+  - path="/module/{id_story}/create"
+
+Put
+  - path="/module/{id_module}/edit"
+
+Delete
+  - path="/module/{id_module}/delete"
+
+***
+## StoryController
+***
+
+Get
+  - path="/usernameAuthors/{id_story}"
+  - path="/modules/{id_story}"
+  - path="/sharedstories/{id_user}"
+  - path="/story/{id_story}/modulesAndSubmodules"
+  - path="/story/{id_story}"
+
+Post
+  - path="/story/{id_user}/create"
+  - path="/story/addReaderOrCoAuthor/{id_story}"
+
+Put
+  - path="/story/saveModulesAndSubmodules"
+  - path="/story/{id_story}/edit"
+
+Delete
+  - path="/story/{id_story}/delete"
+
+***
+## SubmoduleController
+***
+
+Get
+  - path="/submodule/{id_submodule}"
+  - path="/submodule/{idStory}/story_submodules"
+
+Post
+  - path="/submodule/{id_module}/createSubmodule"
+
+Put
+  - path="/submodule/changeName"
+  - path="/submodule/changeNote"
+
+Delete
+  - path="/submodule/{id_submodule}/delete"
+  - path="/submodule/{id_submodule}/deleteAllByStory"
+
+***
+## UserController
+***
+
+Get
+  - path="/user/{id_user}"
+  - path="/user/users"
+
+Put
+  - path="/user/changePassword"
+  - path="/user/changeUsername"
+  - path="/user/changeMail"
