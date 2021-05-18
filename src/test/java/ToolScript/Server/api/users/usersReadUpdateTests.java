@@ -59,6 +59,29 @@ public class usersReadUpdateTests {
     	assertEquals("test2", userRepository.findByUsername("test2").get().getUsername());
     }
     
+    @Test
+    public void testChangePassword() {
+    	user = new User();
+    	user.setPassword("1234");
+    	user.setUsername("test");
+    	userRepository.save(user);
+    	User res = userRepository.findByUsername("test").get();
+    	res.setPassword("12345");
+    	userRepository.save(res);
+    	assertEquals("12345", userRepository.findByUsername("test").get().getPassword());
+    }
+    
+    @Test
+    public void testChangeMail() {
+    	user = new User();
+    	user.setEmail("test@gmail.com");
+    	user.setUsername("test");
+    	userRepository.save(user);
+    	User res = userRepository.findByUsername("test").get();
+    	res.setEmail("test@test.com");
+    	userRepository.save(res);
+    	assertEquals("test@test.com", userRepository.findByUsername("test").get().getEmail());
+    }
     
 }
 
