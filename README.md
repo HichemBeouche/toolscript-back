@@ -19,7 +19,7 @@ Introduction à l'installation du projet :
 
 Pour la base de donnée :
 
-* Pour pouvoir accéder à la base de données, il faut se connecter au VPN Cisco
+* Pour pouvoir accéder à la base de données, il faut se connecter au VPN Cisco de L'IUT
 
 Récuperer le code :
 
