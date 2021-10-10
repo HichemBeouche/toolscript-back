@@ -47,7 +47,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'toolscript-back'
+          app-name: 'ToolScript'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_594EE5538C8A4B7DA53F627BECDC6BEB }}
           package: '*.jar'
