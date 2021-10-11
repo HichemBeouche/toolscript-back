@@ -11,9 +11,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-defaults:
-  run:
-    working-directory: toolscript-back
+
 
 jobs:
   build:
