@@ -5,9 +5,15 @@ name: toolscript-back
 
 on:
   push:
+    paths:
+      - 'toolscript-back/'
+      - '.github/workflows/main_toolscript-back.yml'
     branches:
       - main
   workflow_dispatch:
+defaults:
+  run:
+    working-directory: toolscript-back
 
 jobs:
   build:
@@ -27,7 +33,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: java-app
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
@@ -41,7 +47,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: build
+          name: java-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
