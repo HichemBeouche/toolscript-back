@@ -39,4 +39,4 @@ jobs:
           app-name: 'ToolScript'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2A963B9B67A34C568DBDB1F20D70FA7D }}
-          package: '*.jar'
+          package: '$(System.DefaultWorkingDirectory)'
