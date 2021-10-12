@@ -35,7 +35,7 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: 'D:\a\toolscript-back\toolscript-back\target\*.jar'
     
     steps:
       - name: Download artifact from build job
