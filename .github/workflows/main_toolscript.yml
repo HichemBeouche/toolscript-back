@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: 'D:\a\toolscript-back\toolscript-back\target\*.jar'
+          path: ./build
 
   deploy:
     runs-on: ubuntu-latest
